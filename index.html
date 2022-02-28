@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilibili-首页</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- 首页 -->
+    <div class="app">
+        <div class="bilibili_home_page">
+            <!-- 头部导航栏 -->
+            <nav class="top_navigation">
+                <ul class="top_navigation_bar">
+                    <li class="top_navigation_bar_li" v-for="(item,index) in top_navigation_bar_left">
+                        <a href="#">{{item}}</a>
+                    </li>
+                    <li class="top_navigation_bar_li">
+                        <div class="search_record_box" id="search_record_box_id">
+                            <!-- 搜索框 -->
+                            <div class="top_navigation_bar_input">
+                                <input @blur="hide_browsing_history1" @focus="show_browsing_history1" v-model="inputValue"
+                                    @keyup.enter="add" type="text" placeholder="海贼王">
+                                <el-button class="el-icon-search"></el-button>
+                            </div>
+                            <!-- 浏览记录-->
+                            <div class="browsing_history" v-show="browsing_history_show_or_not1">
+                                <ul>
+                                    <li class="browsing_history_li browsing_history_li_title">
+                                        <label><strong>&emsp;搜索历史</strong></label>
+                                        <div class="browsing_history_clear">
+                                            <button class="browsing_history_clear_button" @click="clear">清空</button>
+                                        </div>
+                                    </li>
+                                    <li v-for="(item,index) in home_top_navigation_list" class="browsing_history_li">
+                                        <label>&emsp;{{index+1}}&emsp;{{item}}</label>
+                                        <el-button class="el-icon-close" @click.stop="remove(index)"></el-button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="top_navigation_bar_li" v-for="(item,index) in top_navigation_bar_right">
+                        <a href="#">{{item}}</a>
+                    </li>
+                    <li class="top_navigation_bar_li">
+                        <div class="contribute">
+                            <a href="#">
+                                投稿
+                            </a>
+                        </div>   
+                    </li>
+                </ul>
+            </nav>
+            <!-- 分类 -->
+            <div class="content_classification">
+                <!-- 大类 -->
+                <div class="broad_heading">
+                    <ul class="broad_heading_ul">
+                        <li v-for="(item,index) in broad_heading_ul_li">
+                            <a href="#">
+                                <div class="broad_heading_picture"></div>
+                                <span>{{item}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <span class="the_divider_1"></span>
+                <!-- 细分类 -->
+                <div class="content_classification_subdivision">
+                    <ul>
+                        <li v-for="(item,index) in content_subdivision_list_up">
+                            <a href="#">
+                                <el-dropdown class="content_subdivision_item" placement="top-start">
+                                    <div class="el-dropdown-link">
+                                        <span class="content_subdivision_item_span">
+                                            {{item}}
+                                        </span>
+                                        <div class="content_subdivision_num">
+                                            <em class="content_subdivision_num_color">
+                                                999+
+                                            </em>
+                                        </div>
+                                    </div>
+                                    <el-dropdown-menu slot="dropdown" class="content_subdivision_dropdown_menu">
+                                        <el-dropdown-item v-for="(item1,index1) in content_subdivision_list_float">
+                                            {{item1}}
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </a>
+                        </li>
+                        <li v-for="(item,index) in content_subdivision_list_down">
+                            <a href="#">
+                                <el-dropdown class="content_subdivision_item">
+                                    <div class="el-dropdown-link">
+                                        <span class="content_subdivision_item_span">
+                                            {{item}}
+                                        </span>
+                                        <div class="content_subdivision_num">
+                                            <em class="content_subdivision_num_color">
+                                                999+
+                                            </em>
+                                        </div>
+                                    </div>
+                                    <el-dropdown-menu slot="dropdown" class="content_subdivision_dropdown_menu" >
+                                        <el-dropdown-item v-for="(item1,index1) in content_subdivision_list_float">
+                                            {{item1}}
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </a>
+                        </li>
+                        <li class="special">
+                            <el-dropdown class="content_subdivision_item">
+                                <div class="el-dropdown-link">
+                                    <div class="content_subdivision_item_span ">
+                                        <span class="content_subdivision_item_span_more">
+                                            更多
+                                        </span>
+                                    </div>
+                                    <div class="content_subdivision_num">
+                                        <i class="el-icon-arrow-down el-icon--right"></i>
+                                    </div>
+                                </div>
+                                <el-dropdown-menu slot="dropdown" class="content_subdivision_dropdown_menu">
+                                    <el-dropdown-item>搞笑</el-dropdown-item>
+                                    <el-dropdown-item>家具房产</el-dropdown-item>
+                                    <el-dropdown-item>手工</el-dropdown-item>
+                                    <el-dropdown-item>绘画</el-dropdown-item>
+                                    <el-dropdown-item>日常</el-dropdown-item>
+                                    <el-dropdown-item>预告</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </li>
+                    </ul>
+                </div>
+                <span class="the_divider_2"></span>
+                <!-- 功能分类 -->
+                <div class="content_functional_classification">
+                    <ul>
+                        <li v-for="(item,index) in content_functional_classification">
+                            <a href="#">
+                                <div class="broad_heading_picture"></div>
+                                <span>{{item}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 热点视频 -->
+            <div class="hot_video">
+                <a class="hot_video_left" href="#">
+                    <span>ʅ（´◔౪◔）ʃ谁叫你是小可爱呢？</span>
+                </a>
+                <div class="hot_video_right">
+                    <template v-for="(item,index) in hot_video_img">
+                        <a :style="'background-image: url(./icon/'+(index+2)+'.jpg);'" class="hot_video_right_content" href="#">
+                            <span>{{item}}</span>
+                        </a>
+                    </template>
+                </div>
+            </div>
+            <!-- 推广 -->
+            <div class="home_page_advertising">
+                <div class="home_page_advertising_headline">
+                    <div class="home_page_advertising_headline_left">
+                        <div class="broad_heading_picture1"></div>
+                        <span class="advertising_promotion">推广</span>
+                        <div class="broad_heading_picture2"></div>
+                        <a href="#">
+                            <span>这样的御坂美琴，你见过么</span>
+                        </a>
+                        <div class="broad_heading_picture2"></div>
+                        <a href="#">
+                            <span>百万UP创作分享，你要不要吧！</span>
+                        </a>
+                    </div>
+                    <div class="home_page_advertising_headline_right">
+                        <a href="#">
+                            <span>观看列表</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="home_page_advertising_video_all">
+                    <div class="home_page_advertising_video_left">
+                        <div class="home_page_advertising_video" v-for="(item,index) in home_page_advertising_video">
+                            <a href="#" class="home_page_advertising_video_a_top">
+                                <div class="home_page_advertising_video_" :style="'background-image: url(./icon/'+(index+8)+'.jpg);'"></div>
+                                <span>{{item.up}}</span>
+                            </a>
+                            <a href="#" class="home_page_advertising_video_a_bottom">
+                                <span>{{item.down}}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="home_page_advertising_video_right">
+                        <a href="#">
+                            <div class="home_page_advertising_video_right_content"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
